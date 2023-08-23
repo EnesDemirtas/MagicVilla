@@ -1,3 +1,4 @@
+using MagicVilla_VillaAPI;
 using MagicVilla_VillaAPI.Data;
 using MagicVilla_VillaAPI.Logging;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultSQLConnection")));
 
+builder.Services.AddAutoMapper(typeof(MappingConfig));
+
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 // Serilog.Sinks.AspNetCore + Serilog.Sinks.File
 //Log.Logger = new LoggerConfiguration().MinimumLevel.Debug()
@@ -15,10 +18,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 //builder.Host.UseSerilog();
 
-builder.Services.AddControllers(option =>
-{
-    option.ReturnHttpNotAcceptable = true;
-}).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
+builder.Services.AddControllers().AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
