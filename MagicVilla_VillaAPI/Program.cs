@@ -1,6 +1,8 @@
 using MagicVilla_VillaAPI;
 using MagicVilla_VillaAPI.Data;
 using MagicVilla_VillaAPI.Logging;
+using MagicVilla_VillaAPI.Repository;
+using MagicVilla_VillaAPI.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultSQLConnection")));
-
+builder.Services.AddScoped<IVillaRepository, VillaRepository>();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
