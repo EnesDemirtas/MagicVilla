@@ -8,7 +8,7 @@ namespace MagicVilla_Web.Services
     public class AuthService : BaseService, IAuthService
     {
         private readonly IHttpClientFactory _clientFactory;
-        private string villaUrl;
+        private readonly string villaUrl;
 
         public AuthService(IHttpClientFactory clientFactory, IConfiguration configuration) : base(clientFactory)
         {

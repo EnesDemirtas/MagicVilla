@@ -9,12 +9,12 @@ namespace MagicVilla_Web.Services
 {
     public class BaseService : IBaseService
     {
-        public APIResponse responseModel { get; set; }
-        public IHttpClientFactory httpClient { get; set; }
+        public APIResponse ResponseModel { get; set; }
+        public IHttpClientFactory HttpClient { get; set; }
         public BaseService(IHttpClientFactory httpClient)
         {
-            this.responseModel = new();
-            this.httpClient = httpClient;
+            this.ResponseModel = new();
+            this.HttpClient = httpClient;
 
         }
 
@@ -22,8 +22,8 @@ namespace MagicVilla_Web.Services
         {
             try
             {
-                var client = httpClient.CreateClient("MagicAPI");
-                HttpRequestMessage message = new HttpRequestMessage();
+                var client = HttpClient.CreateClient("MagicAPI");
+                HttpRequestMessage message = new();
                 message.Headers.Add("Accept", "application/json");
                 message.RequestUri = new Uri(apiRequest.Url);
 
