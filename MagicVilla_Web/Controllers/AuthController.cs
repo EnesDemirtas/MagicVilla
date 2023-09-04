@@ -44,7 +44,7 @@ namespace MagicVilla_Web.Controllers
                 identity.AddClaim(new Claim(ClaimTypes.Role, jwt.Claims.FirstOrDefault(u => u.Type == "role").Value));
                 var principal = new ClaimsPrincipal(identity);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                HttpContext.Session.SetString(SD.SessionToken, model.Token);
+                HttpContext.Session.SetString(SD.AccessToken, model.Token);
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -91,7 +91,7 @@ namespace MagicVilla_Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
-            HttpContext.Session.SetString(SD.SessionToken, "");
+            HttpContext.Session.SetString(SD.AccessToken, "");
             return RedirectToAction("Index", "Home");
         }
 
