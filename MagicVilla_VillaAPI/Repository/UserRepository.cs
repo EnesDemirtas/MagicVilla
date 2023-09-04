@@ -47,7 +47,7 @@ namespace MagicVilla_VillaAPI.Repository
             {
                 return new TokenDTO()
                 {
-                    Token = ""
+                    AccessToken = ""
                 };
             }
             var roles = await _userManager.GetRolesAsync(user);
@@ -68,7 +68,7 @@ namespace MagicVilla_VillaAPI.Repository
             var token = tokenHandler.CreateToken(tokenDescriptor);
             TokenDTO tokenDto = new()
             {
-                Token = tokenHandler.WriteToken(token),
+                AccessToken = tokenHandler.WriteToken(token),
                 // Role = roles.FirstOrDefault()
             };
             return tokenDto;
