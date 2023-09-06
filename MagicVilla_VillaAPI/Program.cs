@@ -1,6 +1,8 @@
 using MagicVilla_VillaAPI;
 using MagicVilla_VillaAPI.Data;
+using MagicVilla_VillaAPI.Filters;
 using MagicVilla_VillaAPI.Logging;
+using MagicVilla_VillaAPI.Middlewares;
 using MagicVilla_VillaAPI.Models;
 using MagicVilla_VillaAPI.Repository;
 using MagicVilla_VillaAPI.Repository.IRepository;
@@ -47,7 +49,15 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddControllers(options =>
 {
     // options.CacheProfiles.Add("Default30", new CacheProfile() { Duration = 30 });
-}).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters();
+    options.Filters.Add<CustomExceptionFilter>();
+}).AddNewtonsoftJson().AddXmlDataContractSerializerFormatters()
+.ConfigureApiBehaviorOptions(options =>
+{
+    options.ClientErrorMapping[StatusCodes.Status500InternalServerError] = new ClientErrorData
+    {
+        Link = "https://www.dotnetmastery.com/500"
+    };
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
@@ -65,7 +75,9 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Magic_VillaV1");
     });
 }
-app.UseStaticFiles();
+// app.UseExceptionHandler("/ErrorHandling/ProcessError");
+// app.HandleError(app.Environment.IsDevelopment());
+app.UseMiddleware<CustomExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
