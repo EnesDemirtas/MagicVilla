@@ -29,6 +29,16 @@ namespace MagicVilla_Web.Services
             }, withBearer: false);
         }
 
+        public async Task<T> LogoutAsync<T>(TokenDTO obj)
+        {
+            return await _baseService.SendAsync<T>(new APIRequest()
+            {
+                ApiType = SD.ApiType.POST,
+                Data = obj,
+                Url = villaUrl + $"/api/{SD.CurrentAPIVersion}/UsersAuth/revoke"
+            });
+        }
+
         public async Task<T> RegisterAsync<T>(RegistrationRequestDTO obj)
         {
             return await _baseService.SendAsync<T>(new APIRequest()
